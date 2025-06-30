@@ -507,48 +507,61 @@
 			  setTheme(newTheme);			  
 		});
 
- 
 		document.addEventListener("DOMContentLoaded", function () {
 			const currentPageUrl = window.location.href;
+
+			// Логируем начало работы
+			console.log("Запрос к API для подстановки ссылки...");
 
 			fetch("https://crypto.happ.su/api.php", {
 				method: "POST",
 				headers: {
-					"Content-Type": "application/json"
+				"Content-Type": "application/json"
 				},
 				body: JSON.stringify({ url: currentPageUrl })
 			})
-			.then(response => response.text())  // сначала получаем тело ответа как текст
+			.then(response => response.text())
 			.then(result => {
 				const apiLink = result.trim();
 				console.log("API вернул ссылку:", apiLink);
 
 				if (!apiLink || apiLink === currentPageUrl) {
-					console.warn("API вернул некорректную или текущую ссылку, подмена не будет происходить");
-					return; // прерываем дальнейшую обработку
+				console.warn("API вернул некорректную или текущую ссылку, подмена не будет происходить");
+				return;
 				}
 
 				// iOS
 				const a0 = document.getElementById('linkFix0');
 				if (a0) {
-					a0.href = apiLink;
-					a0.classList.remove('disabled-link');
+				a0.href = apiLink;
+				a0.classList.remove('disabled-link');
+				console.log('iOS ссылка подставлена:', apiLink);
+				} else {
+				console.warn('Элемент linkFix0 не найден!');
 				}
 
 				// Android
 				const a1 = document.getElementById('linkFix1');
 				if (a1) {
-					a1.href = apiLink;
-					a1.classList.remove('disabled-link');
+				a1.href = apiLink;
+				a1.classList.remove('disabled-link');
+				console.log('Android ссылка подставлена:', apiLink);
+				} else {
+				console.warn('Элемент linkFix1 не найден!');
 				}
 
-				// Hiddify-клиенты (Windows, macOS, Linux) — заменяем {link}
+				// Hiddify-клиенты (Windows, macOS, Linux)
 				const selfLinks = document.getElementsByClassName('self-link');
+				if (selfLinks.length) {
 				Array.from(selfLinks).forEach(link => {
 					if (link.href.includes('{link}')) {
-						link.href = link.href.replace('{link}', encodeURIComponent(apiLink));
+					link.href = link.href.replace('{link}', encodeURIComponent(apiLink));
+					console.log('Hiddify ссылка подставлена:', link.href);
 					}
 				});
+				} else {
+				console.warn('Элементы с классом self-link не найдены!');
+				}
 			})
 			.catch(error => {
 				console.error("Ошибка при получении ссылки:", error);
