@@ -513,40 +513,41 @@
 			  setTheme(newTheme);			  
 		});
 
-		const links = document.getElementsByClassName('self-link');
-		Array.from(links).forEach(link => {
-			link.href = link.href.replace('{link}', window.location.href);
-		});
+	document.addEventListener("DOMContentLoaded", function () {
+	fetch("https://crypto.happ.su/api.php", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({ url: window.location.href })
+	})
+	.then(response => response.text())
+	.then(result => {
+		const url = result.trim();
 
-		document.addEventListener("DOMContentLoaded", function () {
-			fetch("https://crypto.happ.su/api.php", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({ url: window.location.href })
-			})
-			.then(response => response.text())
-			.then(result => {
-				const a0 = document.getElementById('linkFix0');
-				if (a0) {
-					a0.href = result.trim();
-					a0.classList.remove('disabled-link');
-				} else {
-					console.error("Элемент #linkFix0 не найден в DOM.");
-				}
+		// iOS
+		const a0 = document.getElementById('linkFix0');
+		if (a0) {
+			a0.href = "streisand://import/" + url + "#Title";
+			a0.classList.remove('disabled-link');
+		}
 
-				const a1 = document.getElementById('linkFix1');
-				if (a1) {
-					a1.href = result.trim();
-					a1.classList.remove('disabled-link');
-				} else {
-					console.error("Элемент #linkFix1 не найден в DOM.");
-				}
-			})
-			.catch(error => {
-				console.error("Ошибка при получении ссылки:", error);
-			});
+		// Android
+		const a1 = document.getElementById('linkFix1');
+		if (a1) {
+			a1.href = "streisand://import/" + url + "#Title";
+			a1.classList.remove('disabled-link');
+		}
+
+		// Все ссылки, содержащие {link} — Windows, macOS, Linux
+		const selfLinks = document.getElementsByClassName('self-link');
+		Array.from(selfLinks).forEach(link => {
+			link.href = link.href.replace('{link}', encodeURIComponent(url));
 		});
+	})
+	.catch(error => {
+		console.error("Ошибка при получении ссылки:", error);
+	});
+	});
 	</script>
 </html>
