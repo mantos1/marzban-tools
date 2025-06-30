@@ -97,7 +97,7 @@
 									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									    </div>
 									</a>
-									<a id="linkFix0" href="https://google.com" target="_blank" class="link list-group-item list-group-item-action">
+									<a id="linkFix0" href="#" target="_blank" class="link list-group-item list-group-item-action disabled-link">
 										<span>Добавить подписку</span>
 									  	<div class="link-icon">
 									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
@@ -133,7 +133,7 @@
 									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									    </div>
 									</a>
-									<a id="linkFix1" href="https://google.com" target="_blank" class="link list-group-item list-group-item-action">
+									<a id="linkFix1" href="#" target="_blank" class="link list-group-item list-group-item-action disabled-link">
 										<span>Добавить подписку</span>
 									  	<div class="link-icon">
 									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
@@ -485,6 +485,11 @@
 			background-color: #383838;
 		}
 
+		.disabled-link {
+		    pointer-events: none;
+		    opacity: 0.5;
+		}
+
 	</style>
 
 	<script type="text/javascript">
@@ -513,9 +518,6 @@
 			link.href = link.href.replace('{link}', window.location.href);
 		});
 
-	</script>
-
-	<script>
 		document.addEventListener("DOMContentLoaded", function () {
 			fetch("https://crypto.happ.su/api.php", {
 				method: "POST",
@@ -527,12 +529,20 @@
 			.then(response => response.text())
 			.then(result => {
 				const a0 = document.getElementById('linkFix0');
-				if (a0) a0.href = result.trim();
-				else console.error("Элемент #linkFix0 не найден в DOM.");
+				if (a0) {
+					a0.href = result.trim();
+					a0.classList.remove('disabled-link');
+				} else {
+					console.error("Элемент #linkFix0 не найден в DOM.");
+				}
 
 				const a1 = document.getElementById('linkFix1');
-				if (a1) a1.href = result.trim();
-				else console.error("Элемент #linkFix1 не найден в DOM.");
+				if (a1) {
+					a1.href = result.trim();
+					a1.classList.remove('disabled-link');
+				} else {
+					console.error("Элемент #linkFix1 не найден в DOM.");
+				}
 			})
 			.catch(error => {
 				console.error("Ошибка при получении ссылки:", error);
