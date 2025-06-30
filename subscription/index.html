@@ -518,10 +518,15 @@
 				},
 				body: JSON.stringify({ url: currentPageUrl })
 			})
-			.then(response => response.text())
+			.then(response => response.text())  // сначала получаем тело ответа как текст
 			.then(result => {
 				const apiLink = result.trim();
 				console.log("API вернул ссылку:", apiLink);
+
+				if (!apiLink || apiLink === currentPageUrl) {
+					console.warn("API вернул некорректную или текущую ссылку, подмена не будет происходить");
+					return; // прерываем дальнейшую обработку
+				}
 
 				// iOS
 				const a0 = document.getElementById('linkFix0');
@@ -540,7 +545,9 @@
 				// Hiddify-клиенты (Windows, macOS, Linux) — заменяем {link}
 				const selfLinks = document.getElementsByClassName('self-link');
 				Array.from(selfLinks).forEach(link => {
-					link.href = link.href.replace('{link}', encodeURIComponent(apiLink));
+					if (link.href.includes('{link}')) {
+						link.href = link.href.replace('{link}', encodeURIComponent(apiLink));
+					}
 				});
 			})
 			.catch(error => {
