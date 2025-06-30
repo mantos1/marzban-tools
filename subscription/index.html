@@ -103,35 +103,6 @@
 									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									    </div>
 									</a>
-
-									<!-- For some reason js code doesn't work on Safari. The only quick fix I know -->
-									<!-- <script>
-										var a = document.getElementById('linkFix');
-										a.href = "streisand://import/" + window.location.href + "#Title";
-									</script> -->
-									<script>
-									document.addEventListener("DOMContentLoaded", function () {
-										fetch("https://crypto.happ.su/api.php", {
-										method: "POST",
-										headers: {
-											"Content-Type": "application/json"
-										},
-										body: JSON.stringify({ url: window.location.href })
-										})
-										.then(response => response.text())
-										.then(result => {
-										const a = document.getElementById('linkFix0');
-										if (a) {
-											a.href = result.trim();
-										} else {
-											console.error("Элемент #linkFix0 не найден в DOM.");
-										}
-										})
-										.catch(error => {
-										console.error("Ошибка при получении ссылки:", error);
-										});
-									});
-									</script>								
 								</div>
 								
 							    <div class="instructions">
@@ -162,47 +133,12 @@
 									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									    </div>
 									</a>
-									<!-- <a href="v2rayng://install-config?url={link}&name=Title" target="_blank" class="self-link link list-group-item list-group-item-action">
-										<span>Добавить подписку</span>
-									  	<div class="link-icon">
-									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
-									    </div>
-									</a> -->
 									<a id="linkFix1" href="https://google.com" target="_blank" class="link list-group-item list-group-item-action">
 										<span>Добавить подписку</span>
 									  	<div class="link-icon">
 									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									    </div>
 									</a>
-
-									<!-- For some reason js code doesn't work on Safari. The only quick fix I know -->
-									<!-- <script>
-										var a = document.getElementById('linkFix');
-										a.href = "streisand://import/" + window.location.href + "#Title";
-									</script> -->
-									<script>
-									document.addEventListener("DOMContentLoaded", function () {
-										fetch("https://crypto.happ.su/api.php", {
-										method: "POST",
-										headers: {
-											"Content-Type": "application/json"
-										},
-										body: JSON.stringify({ url: window.location.href })
-										})
-										.then(response => response.text())
-										.then(result => {
-										const a = document.getElementById('linkFix1');
-										if (a) {
-											a.href = result.trim();
-										} else {
-											console.error("Элемент #linkFix1 не найден в DOM.");
-										}
-										})
-										.catch(error => {
-										console.error("Ошибка при получении ссылки:", error);
-										});
-									});
-									</script>									
 								</div>
 								
 							    <div class="instructions">
@@ -577,5 +513,30 @@
 			link.href = link.href.replace('{link}', window.location.href);
 		});
 
+	</script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			fetch("https://crypto.happ.su/api.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({ url: window.location.href })
+			})
+			.then(response => response.text())
+			.then(result => {
+				const a0 = document.getElementById('linkFix0');
+				if (a0) a0.href = result.trim();
+				else console.error("Элемент #linkFix0 не найден в DOM.");
+
+				const a1 = document.getElementById('linkFix1');
+				if (a1) a1.href = result.trim();
+				else console.error("Элемент #linkFix1 не найден в DOM.");
+			})
+			.catch(error => {
+				console.error("Ошибка при получении ссылки:", error);
+			});
+		});
 	</script>
 </html>
