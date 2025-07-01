@@ -103,6 +103,11 @@
 									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									    </div>
 									</a>
+									<script>
+										var a = document.getElementById('linkFix0');
+										a.href = "happ://add/" + window.location.href;
+									</script>
+
 								</div>
 								
 							    <div class="instructions">
@@ -139,6 +144,10 @@
 									    	<svg class="icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" /></svg>
 									    </div>
 									</a>
+									<script>
+										var a = document.getElementById('linkFix1');
+										a.href = "happ://add/" + window.location.href;
+									</script>									
 								</div>
 								
 							    <div class="instructions">
@@ -507,66 +516,10 @@
 			  setTheme(newTheme);			  
 		});
 
-		document.addEventListener("DOMContentLoaded", function () {
-			const currentPageUrl = window.location.href;
-
-			// Логируем начало работы
-			console.log("Запрос к API для подстановки ссылки...");
-
-			fetch("https://crypto.happ.su/api.php", {
-				method: "POST",
-				headers: {
-				"Content-Type": "application/json"
-				},
-				body: JSON.stringify({ url: currentPageUrl })
-			})
-			.then(response => response.text())
-			.then(result => {
-				const apiLink = result.trim(); 
-
-				console.log("API вернул ссылку:", apiLink);
-
-				if (!apiLink || apiLink === currentPageUrl) {
-				console.warn("API вернул некорректную или текущую ссылку, подмена не будет происходить");
-				return;
-				}
-
-				// iOS
-				const a0 = document.getElementById('linkFix0');
-				if (a0) {
-				a0.href = "happ://add/" + window.location.href;//apiLink;
-				a0.classList.remove('disabled-link');
-				console.log('iOS ссылка подставлена:', apiLink);
-				} else {
-				console.warn('Элемент linkFix0 не найден!');
-				}
-
-				// Android
-				const a1 = document.getElementById('linkFix1');
-				if (a1) {
-				a1.href = "happ://add/" + window.location.href;//apiLink;
-				a1.classList.remove('disabled-link');
-				console.log('Android ссылка подставлена:', apiLink);
-				} else {
-				console.warn('Элемент linkFix1 не найден!');
-				}
-
-				// Hiddify-клиенты (Windows, macOS, Linux)
-				const selfLinks = document.getElementsByClassName('self-link');
-				if (selfLinks.length) {
-				Array.from(selfLinks).forEach(link => {
-					if (link.href.includes('{link}')) {
-					link.href = link.href.replace('{link}', encodeURIComponent(apiLink));
-					console.log('Hiddify ссылка подставлена:', link.href);
-					}
-				});
-				} else {
-				console.warn('Элементы с классом self-link не найдены!');
-				}
-			})
-			.catch(error => {
-				console.error("Ошибка при получении ссылки:", error);
-			});
+		const links = document.getElementsByClassName('self-link');
+		Array.from(links).forEach(link => {
+			link.href = link.href.replace('{link}', window.location.href);
 		});
+
 	</script>
 </html>
