@@ -522,7 +522,8 @@
 			})
 			.then(response => response.text())
 			.then(result => {
-				const apiLink = result.trim();
+				const apiLink = result.trim(); 
+
 				console.log("API вернул ссылку:", apiLink);
 
 				if (!apiLink || apiLink === currentPageUrl) {
@@ -533,7 +534,7 @@
 				// iOS
 				const a0 = document.getElementById('linkFix0');
 				if (a0) {
-				a0.href = apiLink;
+				a0.href = "happ://add/" + window.location.href;//apiLink;
 				a0.classList.remove('disabled-link');
 				console.log('iOS ссылка подставлена:', apiLink);
 				} else {
@@ -543,7 +544,7 @@
 				// Android
 				const a1 = document.getElementById('linkFix1');
 				if (a1) {
-				a1.href = apiLink;
+				a1.href = "happ://add/" + window.location.href;//apiLink;
 				a1.classList.remove('disabled-link');
 				console.log('Android ссылка подставлена:', apiLink);
 				} else {
